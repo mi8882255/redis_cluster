@@ -7,6 +7,7 @@
   with_items:
     - ruby
     - vim
+    - iptables
 
 - name: Place the redis.conf file on all hosts
   copy: src=redis.conf dest=/etc/redis.conf
@@ -27,10 +28,10 @@
   shell: make install chdir=/root/redis-3.0.0/
 
 - name: Open up port 6379 on iptables
-  shell: iptables -I INPUT -p tcp --dport 6379 -j ACCEPT; service iptables save; service iptables reload
+  shell: iptables -I INPUT -p tcp --dport 6379 -j ACCEPT; iptables-save
 
 - name: Open up port 16379 on iptables
-  shell: iptables -I INPUT -p tcp --dport 16379 -j ACCEPT; service iptables save; service iptables reload
+  shell: iptables -I INPUT -p tcp --dport 16379 -j ACCEPT; iptables-save
 
 - name: Start redis
   command: redis-server /etc/redis.conf
